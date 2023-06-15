@@ -1,39 +1,47 @@
-import Product from "./Product";
-// import Product from "./ProductEventHandling";
+import {useState} from 'react';
+// import Product from "./Product";
+import Product from "./ProductEventHandling";
 
-function ProductList({products, cartItems, updateCartItems}) {
+function ProductList({products, cartItems, updateSubtotal}) {
 
-    // this updates the cart items state
-    const onProductQtyChange = (product, qty) => {
-        // check if the product is in cart items
-        
-        // Goal: Create this
-        // {
-        //     '1': {...product, qty: 5}
-        //     '5': {price: 700, qty: 0}
-        // }
+    const [lastUpdatedProduct, setLastUpdatedProduct] = useState('a product')
 
-        const newCartItems = {...cartItems}
-        newCartItems[product.id] = {...product, qty}
+    const updateLastUpdatedProduct = (productChanged, qty) => {
 
-        if (qty === 0) {
-            delete newCartItems[product.id];
+        // the callback function can create guardrails if necessary
+        if (productChanged.description.includes('iPhone')) {
+            return;
         }
 
-        updateCartItems(newCartItems)
+        console.log(productChanged)
+
+        updateSubtotal(productChanged.price * qty);
+
+        setLastUpdatedProduct(productChanged.description)
     }
 
-    // const productListElems = [
-    //     <div>Macbook Pro</div>,
-    //     <div>Macbook Air</div>,
-    //     <div>Lenovo Thinkpad</div>
-    // ]
+    const onClear = () => {
+        setLastUpdatedProduct('No product selected')
+    }
 
     return (
         <div>
+            <div>
+                <h3>Last Updated Product: {lastUpdatedProduct} </h3>
+            </div>
+
+            <button onClick={onClear}>Clear</button>
+
             {products.map((product) => (
-                <Product key={`product-${product.id}`} product={product} cartItems={cartItems} onProductQtyChange={onProductQtyChange} />
+                <Product 
+                    key={`product-${product.id}`} 
+                    product={product} 
+                    updateLastUpdatedProduct={updateLastUpdatedProduct}
+                    productWhichWasLastUpdated={lastUpdatedProduct}
+                    cartItems={cartItems} />
             ))}
+
+            
         </div>
     )
 }

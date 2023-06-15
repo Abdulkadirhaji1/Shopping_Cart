@@ -2,11 +2,11 @@ import Basket from '../Basket/Basket';
 import Totals from '../Totals/Totals';
 import './OrderSummary.css';
 
-function OrderSummary() {
+function OrderSummary({ subTotal }) {
     return (
         <div className="order-summary">
             <Basket />
-            <Totals subTotal={4000} tax={345} shipping={9.99} />
+            <Totals subTotal={subTotal} tax={345} shipping={9.99} />
         </div>
     )
 }

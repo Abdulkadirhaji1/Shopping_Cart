@@ -1,12 +1,16 @@
 import { useState } from 'react';
+import classNames from 'classnames';
+import { categories } from '../data/products';
 import './Product.css';
 
-function ProductEventHandling({product, cartItems, onProductQtyChange}) {
+function ProductEventHandling({product, updateLastUpdatedProduct, productWhichWasLastUpdated, cartItems, onProductQtyChange}) {
 
     const [count, setCount] = useState(0);
 
     const decrement = () => {
-        setCount(count - 1);
+        const newCount = count - 1
+        setCount(newCount);
+        updateLastUpdatedProduct(product, newCount);
     }
 
     const increment = () => {
@@ -16,17 +20,33 @@ function ProductEventHandling({product, cartItems, onProductQtyChange}) {
         // setCount(count + 1);
         // console.log(count);
 
+        const newCount = count + 1;
+
         // 0
-        setCount((prevCount) => prevCount + 1)
+        setCount(newCount)
         // 
-        setCount((prevCount) => prevCount + 1)
+        // setCount((prevCount) => prevCount + 1)
         
-        setCount((prevCount) => prevCount + 1)
+        // setCount((prevCount) => prevCount + 1)
+
+        updateLastUpdatedProduct(product, newCount);
+
     }
     
+    const isLastUpdatedProduct = product.description === productWhichWasLastUpdated;
+    const lastUpdatedProductClassName = isLastUpdatedProduct ? 'product-last-updated' : '';
+
+    // const productClassNames = `product-${product.category} ${lastUpdatedProductClassName}`;
+
+    const productClassNames = classNames({
+        'product-container': true,
+        'product-mobile': product.category === categories.MOBILE,
+        'product-computer': product.category === categories.COMPUTER,
+        'product-last-updated': isLastUpdatedProduct
+    })
 
     return (
-        <div className={`product-${product.category}`}>
+        <div className={productClassNames}>
             <h3>{product.description}</h3>
             <h3>Event handling example</h3>
             <h4>Price: ${product.price} </h4>

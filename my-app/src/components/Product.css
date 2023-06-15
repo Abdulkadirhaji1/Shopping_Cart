@@ -5,3 +5,11 @@ div.product-mobile {
 div.product-computer {
     background-color: lightblue;
 }
+
+div.product-computer {
+    background-color: lightblue;
+}
+
+div.product-last-updated {
+    border: 5px solid red;
+}
